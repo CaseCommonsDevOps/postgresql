@@ -46,9 +46,10 @@ rescue LoadError
   node['postgresql']['client']['packages'].each do |pg_pack|
     resources("package[#{pg_pack}]").run_action(:install)
   end
-  
+
   package "libpq-dev" do
     action :nothing
+    only_if { ['debian', 'ubuntu'].include?(node['platform']) }
   end.run_action(:install)
 
   begin
